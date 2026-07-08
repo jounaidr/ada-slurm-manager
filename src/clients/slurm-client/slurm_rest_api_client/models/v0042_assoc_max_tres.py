@@ -1,0 +1,135 @@
+from __future__ import annotations
+
+from collections.abc import Mapping
+from typing import TYPE_CHECKING, Any, TypeVar
+
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
+
+from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.v0042_assoc_max_tres_group import V0042AssocMaxTresGroup
+    from ..models.v0042_assoc_max_tres_minutes import V0042AssocMaxTresMinutes
+    from ..models.v0042_assoc_max_tres_per import V0042AssocMaxTresPer
+    from ..models.v0042_tres import V0042Tres
+
+
+T = TypeVar("T", bound="V0042AssocMaxTres")
+
+
+@_attrs_define
+class V0042AssocMaxTres:
+    """
+    Attributes:
+        total (list[V0042Tres] | Unset):
+        group (V0042AssocMaxTresGroup | Unset):
+        minutes (V0042AssocMaxTresMinutes | Unset):
+        per (V0042AssocMaxTresPer | Unset):
+    """
+
+    total: list[V0042Tres] | Unset = UNSET
+    group: V0042AssocMaxTresGroup | Unset = UNSET
+    minutes: V0042AssocMaxTresMinutes | Unset = UNSET
+    per: V0042AssocMaxTresPer | Unset = UNSET
+    additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
+
+    def to_dict(self) -> dict[str, Any]:
+        total: list[dict[str, Any]] | Unset = UNSET
+        if not isinstance(self.total, Unset):
+            total = []
+            for componentsschemasv0_0_42_tres_list_item_data in self.total:
+                componentsschemasv0_0_42_tres_list_item = componentsschemasv0_0_42_tres_list_item_data.to_dict()
+                total.append(componentsschemasv0_0_42_tres_list_item)
+
+        group: dict[str, Any] | Unset = UNSET
+        if not isinstance(self.group, Unset):
+            group = self.group.to_dict()
+
+        minutes: dict[str, Any] | Unset = UNSET
+        if not isinstance(self.minutes, Unset):
+            minutes = self.minutes.to_dict()
+
+        per: dict[str, Any] | Unset = UNSET
+        if not isinstance(self.per, Unset):
+            per = self.per.to_dict()
+
+        field_dict: dict[str, Any] = {}
+        field_dict.update(self.additional_properties)
+        field_dict.update({})
+        if total is not UNSET:
+            field_dict["total"] = total
+        if group is not UNSET:
+            field_dict["group"] = group
+        if minutes is not UNSET:
+            field_dict["minutes"] = minutes
+        if per is not UNSET:
+            field_dict["per"] = per
+
+        return field_dict
+
+    @classmethod
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.v0042_assoc_max_tres_group import V0042AssocMaxTresGroup
+        from ..models.v0042_assoc_max_tres_minutes import V0042AssocMaxTresMinutes
+        from ..models.v0042_assoc_max_tres_per import V0042AssocMaxTresPer
+        from ..models.v0042_tres import V0042Tres
+
+        d = dict(src_dict)
+        _total = d.pop("total", UNSET)
+        total: list[V0042Tres] | Unset = UNSET
+        if _total is not UNSET:
+            total = []
+            for componentsschemasv0_0_42_tres_list_item_data in _total:
+                componentsschemasv0_0_42_tres_list_item = V0042Tres.from_dict(
+                    componentsschemasv0_0_42_tres_list_item_data
+                )
+
+                total.append(componentsschemasv0_0_42_tres_list_item)
+
+        _group = d.pop("group", UNSET)
+        group: V0042AssocMaxTresGroup | Unset
+        if isinstance(_group, Unset):
+            group = UNSET
+        else:
+            group = V0042AssocMaxTresGroup.from_dict(_group)
+
+        _minutes = d.pop("minutes", UNSET)
+        minutes: V0042AssocMaxTresMinutes | Unset
+        if isinstance(_minutes, Unset):
+            minutes = UNSET
+        else:
+            minutes = V0042AssocMaxTresMinutes.from_dict(_minutes)
+
+        _per = d.pop("per", UNSET)
+        per: V0042AssocMaxTresPer | Unset
+        if isinstance(_per, Unset):
+            per = UNSET
+        else:
+            per = V0042AssocMaxTresPer.from_dict(_per)
+
+        v0042_assoc_max_tres = cls(
+            total=total,
+            group=group,
+            minutes=minutes,
+            per=per,
+        )
+
+        v0042_assoc_max_tres.additional_properties = d
+        return v0042_assoc_max_tres
+
+    @property
+    def additional_keys(self) -> list[str]:
+        return list(self.additional_properties.keys())
+
+    def __getitem__(self, key: str) -> Any:
+        return self.additional_properties[key]
+
+    def __setitem__(self, key: str, value: Any) -> None:
+        self.additional_properties[key] = value
+
+    def __delitem__(self, key: str) -> None:
+        del self.additional_properties[key]
+
+    def __contains__(self, key: str) -> bool:
+        return key in self.additional_properties

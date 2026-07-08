@@ -1,5 +1,4 @@
 # Object file
 *.o
-
-# Ada Library Information
-*.ali
+# Slurm API Client
+src/slurm-client/*

@@ -1,0 +1,102 @@
+from __future__ import annotations
+
+from collections.abc import Mapping
+from typing import TYPE_CHECKING, Any, TypeVar
+
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
+
+from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.dbv_0037_association import Dbv0037Association
+    from ..models.dbv_0037_error import Dbv0037Error
+
+
+T = TypeVar("T", bound="Dbv0037AssociationsInfo")
+
+
+@_attrs_define
+class Dbv0037AssociationsInfo:
+    """
+    Attributes:
+        errors (list[Dbv0037Error] | Unset): Slurm errors
+        associations (list[Dbv0037Association] | Unset): Array of associations
+    """
+
+    errors: list[Dbv0037Error] | Unset = UNSET
+    associations: list[Dbv0037Association] | Unset = UNSET
+    additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
+
+    def to_dict(self) -> dict[str, Any]:
+        errors: list[dict[str, Any]] | Unset = UNSET
+        if not isinstance(self.errors, Unset):
+            errors = []
+            for errors_item_data in self.errors:
+                errors_item = errors_item_data.to_dict()
+                errors.append(errors_item)
+
+        associations: list[dict[str, Any]] | Unset = UNSET
+        if not isinstance(self.associations, Unset):
+            associations = []
+            for associations_item_data in self.associations:
+                associations_item = associations_item_data.to_dict()
+                associations.append(associations_item)
+
+        field_dict: dict[str, Any] = {}
+        field_dict.update(self.additional_properties)
+        field_dict.update({})
+        if errors is not UNSET:
+            field_dict["errors"] = errors
+        if associations is not UNSET:
+            field_dict["associations"] = associations
+
+        return field_dict
+
+    @classmethod
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.dbv_0037_association import Dbv0037Association
+        from ..models.dbv_0037_error import Dbv0037Error
+
+        d = dict(src_dict)
+        _errors = d.pop("errors", UNSET)
+        errors: list[Dbv0037Error] | Unset = UNSET
+        if _errors is not UNSET:
+            errors = []
+            for errors_item_data in _errors:
+                errors_item = Dbv0037Error.from_dict(errors_item_data)
+
+                errors.append(errors_item)
+
+        _associations = d.pop("associations", UNSET)
+        associations: list[Dbv0037Association] | Unset = UNSET
+        if _associations is not UNSET:
+            associations = []
+            for associations_item_data in _associations:
+                associations_item = Dbv0037Association.from_dict(associations_item_data)
+
+                associations.append(associations_item)
+
+        dbv_0037_associations_info = cls(
+            errors=errors,
+            associations=associations,
+        )
+
+        dbv_0037_associations_info.additional_properties = d
+        return dbv_0037_associations_info
+
+    @property
+    def additional_keys(self) -> list[str]:
+        return list(self.additional_properties.keys())
+
+    def __getitem__(self, key: str) -> Any:
+        return self.additional_properties[key]
+
+    def __setitem__(self, key: str, value: Any) -> None:
+        self.additional_properties[key] = value
+
+    def __delitem__(self, key: str) -> None:
+        del self.additional_properties[key]
+
+    def __contains__(self, key: str) -> bool:
+        return key in self.additional_properties

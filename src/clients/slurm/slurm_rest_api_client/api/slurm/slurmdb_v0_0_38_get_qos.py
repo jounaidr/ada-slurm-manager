@@ -1,0 +1,164 @@
+from http import HTTPStatus
+from typing import Any
+
+import httpx
+
+from ...client import AuthenticatedClient, Client
+from ...models.dbv_0038_error import Dbv0038Error
+from ...models.dbv_0038_qos_info import Dbv0038QosInfo
+from ...types import UNSET, Response, Unset
+
+
+def _get_kwargs(
+    *,
+    with_deleted: bool | Unset = UNSET,
+) -> dict[str, Any]:
+
+    params: dict[str, Any] = {}
+
+    params["with_deleted"] = with_deleted
+
+    params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
+
+    _kwargs: dict[str, Any] = {
+        "method": "get",
+        "url": "/slurmdb/v0.0.38/qos",
+        "params": params,
+    }
+
+    return _kwargs
+
+
+def _parse_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Dbv0038QosInfo | list[Dbv0038Error]:
+    if response.status_code == 200:
+        response_200 = Dbv0038QosInfo.from_dict(response.json())
+
+        return response_200
+
+    response_default = []
+    _response_default = response.json()
+    for componentsschemasdbv0_0_38_errors_item_data in _response_default:
+        componentsschemasdbv0_0_38_errors_item = Dbv0038Error.from_dict(componentsschemasdbv0_0_38_errors_item_data)
+
+        response_default.append(componentsschemasdbv0_0_38_errors_item)
+
+    return response_default
+
+
+def _build_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[Dbv0038QosInfo | list[Dbv0038Error]]:
+    return Response(
+        status_code=HTTPStatus(response.status_code),
+        content=response.content,
+        headers=response.headers,
+        parsed=_parse_response(client=client, response=response),
+    )
+
+
+def sync_detailed(
+    *,
+    client: AuthenticatedClient | Client,
+    with_deleted: bool | Unset = UNSET,
+) -> Response[Dbv0038QosInfo | list[Dbv0038Error]]:
+    """Get QOS list
+
+    Args:
+        with_deleted (bool | Unset):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[Dbv0038QosInfo | list[Dbv0038Error]]
+    """
+
+    kwargs = _get_kwargs(
+        with_deleted=with_deleted,
+    )
+
+    response = client.get_httpx_client().request(
+        **kwargs,
+    )
+
+    return _build_response(client=client, response=response)
+
+
+def sync(
+    *,
+    client: AuthenticatedClient | Client,
+    with_deleted: bool | Unset = UNSET,
+) -> Dbv0038QosInfo | list[Dbv0038Error] | None:
+    """Get QOS list
+
+    Args:
+        with_deleted (bool | Unset):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Dbv0038QosInfo | list[Dbv0038Error]
+    """
+
+    return sync_detailed(
+        client=client,
+        with_deleted=with_deleted,
+    ).parsed
+
+
+async def asyncio_detailed(
+    *,
+    client: AuthenticatedClient | Client,
+    with_deleted: bool | Unset = UNSET,
+) -> Response[Dbv0038QosInfo | list[Dbv0038Error]]:
+    """Get QOS list
+
+    Args:
+        with_deleted (bool | Unset):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Response[Dbv0038QosInfo | list[Dbv0038Error]]
+    """
+
+    kwargs = _get_kwargs(
+        with_deleted=with_deleted,
+    )
+
+    response = await client.get_async_httpx_client().request(**kwargs)
+
+    return _build_response(client=client, response=response)
+
+
+async def asyncio(
+    *,
+    client: AuthenticatedClient | Client,
+    with_deleted: bool | Unset = UNSET,
+) -> Dbv0038QosInfo | list[Dbv0038Error] | None:
+    """Get QOS list
+
+    Args:
+        with_deleted (bool | Unset):
+
+    Raises:
+        errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
+        httpx.TimeoutException: If the request takes longer than Client.timeout.
+
+    Returns:
+        Dbv0038QosInfo | list[Dbv0038Error]
+    """
+
+    return (
+        await asyncio_detailed(
+            client=client,
+            with_deleted=with_deleted,
+        )
+    ).parsed

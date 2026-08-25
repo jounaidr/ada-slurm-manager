@@ -1,5 +1,5 @@
 # slurm-rest-api-client
-A client library for accessing Slurm REST API
+A client library for accessing Slurm Rest API
 
 ## Usage
 First, create a client:

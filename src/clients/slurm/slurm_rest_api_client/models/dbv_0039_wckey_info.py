@@ -1,0 +1,124 @@
+from __future__ import annotations
+
+from collections.abc import Mapping
+from typing import TYPE_CHECKING, Any, TypeVar
+
+from attrs import define as _attrs_define
+from attrs import field as _attrs_field
+
+from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.dbv_0039_error import Dbv0039Error
+    from ..models.dbv_0039_meta import Dbv0039Meta
+    from ..models.v0039_wckey import V0039Wckey
+
+
+T = TypeVar("T", bound="Dbv0039WckeyInfo")
+
+
+@_attrs_define
+class Dbv0039WckeyInfo:
+    """
+    Attributes:
+        meta (Dbv0039Meta | Unset):
+        errors (list[Dbv0039Error] | Unset): Slurm errors
+        wckeys (list[V0039Wckey] | Unset):
+    """
+
+    meta: Dbv0039Meta | Unset = UNSET
+    errors: list[Dbv0039Error] | Unset = UNSET
+    wckeys: list[V0039Wckey] | Unset = UNSET
+    additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
+
+    def to_dict(self) -> dict[str, Any]:
+        meta: dict[str, Any] | Unset = UNSET
+        if not isinstance(self.meta, Unset):
+            meta = self.meta.to_dict()
+
+        errors: list[dict[str, Any]] | Unset = UNSET
+        if not isinstance(self.errors, Unset):
+            errors = []
+            for componentsschemasdbv0_0_39_errors_item_data in self.errors:
+                componentsschemasdbv0_0_39_errors_item = componentsschemasdbv0_0_39_errors_item_data.to_dict()
+                errors.append(componentsschemasdbv0_0_39_errors_item)
+
+        wckeys: list[dict[str, Any]] | Unset = UNSET
+        if not isinstance(self.wckeys, Unset):
+            wckeys = []
+            for componentsschemasv0_0_39_wckey_list_item_data in self.wckeys:
+                componentsschemasv0_0_39_wckey_list_item = componentsschemasv0_0_39_wckey_list_item_data.to_dict()
+                wckeys.append(componentsschemasv0_0_39_wckey_list_item)
+
+        field_dict: dict[str, Any] = {}
+        field_dict.update(self.additional_properties)
+        field_dict.update({})
+        if meta is not UNSET:
+            field_dict["meta"] = meta
+        if errors is not UNSET:
+            field_dict["errors"] = errors
+        if wckeys is not UNSET:
+            field_dict["wckeys"] = wckeys
+
+        return field_dict
+
+    @classmethod
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.dbv_0039_error import Dbv0039Error
+        from ..models.dbv_0039_meta import Dbv0039Meta
+        from ..models.v0039_wckey import V0039Wckey
+
+        d = dict(src_dict)
+        _meta = d.pop("meta", UNSET)
+        meta: Dbv0039Meta | Unset
+        if isinstance(_meta, Unset):
+            meta = UNSET
+        else:
+            meta = Dbv0039Meta.from_dict(_meta)
+
+        _errors = d.pop("errors", UNSET)
+        errors: list[Dbv0039Error] | Unset = UNSET
+        if _errors is not UNSET:
+            errors = []
+            for componentsschemasdbv0_0_39_errors_item_data in _errors:
+                componentsschemasdbv0_0_39_errors_item = Dbv0039Error.from_dict(
+                    componentsschemasdbv0_0_39_errors_item_data
+                )
+
+                errors.append(componentsschemasdbv0_0_39_errors_item)
+
+        _wckeys = d.pop("wckeys", UNSET)
+        wckeys: list[V0039Wckey] | Unset = UNSET
+        if _wckeys is not UNSET:
+            wckeys = []
+            for componentsschemasv0_0_39_wckey_list_item_data in _wckeys:
+                componentsschemasv0_0_39_wckey_list_item = V0039Wckey.from_dict(
+                    componentsschemasv0_0_39_wckey_list_item_data
+                )
+
+                wckeys.append(componentsschemasv0_0_39_wckey_list_item)
+
+        dbv_0039_wckey_info = cls(
+            meta=meta,
+            errors=errors,
+            wckeys=wckeys,
+        )
+
+        dbv_0039_wckey_info.additional_properties = d
+        return dbv_0039_wckey_info
+
+    @property
+    def additional_keys(self) -> list[str]:
+        return list(self.additional_properties.keys())
+
+    def __getitem__(self, key: str) -> Any:
+        return self.additional_properties[key]
+
+    def __setitem__(self, key: str, value: Any) -> None:
+        self.additional_properties[key] = value
+
+    def __delitem__(self, key: str) -> None:
+        del self.additional_properties[key]
+
+    def __contains__(self, key: str) -> bool:
+        return key in self.additional_properties

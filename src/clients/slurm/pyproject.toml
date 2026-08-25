@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "slurm-rest-api-client"
-version = "Slurm-25.11.3"
-description = "A client library for accessing Slurm REST API"
+version = "dbv0.0.37"
+description = "A client library for accessing Slurm Rest API"
 authors = []
 readme = "README.md"
 packages = [

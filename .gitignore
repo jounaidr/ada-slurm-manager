@@ -1,4 +1,0 @@
-# Object file
-*.o
-# Slurm API Client
-src/slurm-client/*

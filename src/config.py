@@ -18,7 +18,6 @@ class Config(BaseSettings):
     asm_api_version: str
     asm_api_port: int
 
-    slurm_api_version: str
     slurm_api_url: AnyHttpUrl
     slurm_api_verify_ssl: bool
 

@@ -4,8 +4,21 @@ This project provides a service that automates the creation and submission of jo
 
 # Slurm REST API Client
 
-This service requires a python based slurmrestd client which is generated using the OpenAPI specification slurm-api-spec.json. This can be done by running the following:
-`openapi-python-client generate --path=slurm-api-spec.json --output-path=src/clients/ --overwrite`
+This service uses a Python client generated from `slurm-api-spec.json` using [openapi-python-client](https://github.com/openapi-generators/openapi-python-client).
+
+The generated client is committed to the repository under `slurm-rest-api-client/` and must be installed before running the service:
+```bash
+pip install -e ./slurm-rest-api-client/
+```
+
+## Updating the Client
+
+If the Slurm REST API version changes, regenerate the client and reinstall:
+```bash
+openapi-python-client generate --path=slurm-api-spec.json --overwrite
+```
+
+If the API version has changed (e.g. `v0037` → `v0039`), update the version-specific imports in `src/clients/slurm.py` to match the new model names.
 
 # System Design
 

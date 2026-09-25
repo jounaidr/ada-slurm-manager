@@ -11,3 +11,4 @@ PORT = config.asm_api_port
 # slurm REST client
 SLURM_API_VERSION = config.slurm_api_version
 SLURM_API_URL = config.slurm_api_url
+SLURM_API_VERIFY_SSL = config.slurm_api_verify_ssl

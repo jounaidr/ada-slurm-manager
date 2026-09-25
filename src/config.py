@@ -20,6 +20,7 @@ class Config(BaseSettings):
 
     slurm_api_version: str
     slurm_api_url: AnyHttpUrl
+    slurm_api_verify_ssl: bool
 
 
 def load_config() -> Config:

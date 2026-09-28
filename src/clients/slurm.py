@@ -24,7 +24,6 @@ def _client(token: str) -> AuthenticatedClient:
 async def submit_job(script: str, job_properties: JobProperties, token: str) -> int:
     body = JobSubmission(script=script, job=job_properties)
 
-    # Open and close the connection cleanly.
     async with _client(token) as client:
         response = await slurmctld_submit_job.asyncio(client=client, body=body)
 
@@ -42,7 +41,6 @@ async def submit_job(script: str, job_properties: JobProperties, token: str) -> 
 
 
 async def get_jobs(token: str) -> list[JobResponseProperties]:
-    # Open and close the connection cleanly.
     async with _client(token) as client:
         response = await slurmctld_get_jobs.asyncio(client=client)
 

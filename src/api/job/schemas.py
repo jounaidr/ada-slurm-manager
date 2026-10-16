@@ -42,7 +42,7 @@ class JobSubmitRequest(BaseModel):
         description="Job environment variables, sourced from the database",
         examples=[{"INPUT_FILE": "dataset.h5"}],
     )
-    scarf_scratch_path: str = Field(
+    slurm_scratch_path: str = Field(
         description="Base scratch directory on SCARF for job output",
         examples=["/home/vol01/scarf1234"],
     )

@@ -1,6 +1,6 @@
 # ada-slurm-manager
 
-This project provides a service that automates the creation and submission of jobs to Slurm-based systems, initiated by users of the Ada platform. It also manages data transfer between Ada and the configured Slurm service.
+This project provides a service that automates the creation and submission of jobs to Slurm-based systems, initiated through the [Ada platform](https://ada.stfc.ac.uk/). It also manages data transfer between Ada and the Slurm service.
 
 ## Slurm REST API Client
 
@@ -19,7 +19,3 @@ openapi-python-client generate --path=slurm-api-spec.json --overwrite
 ```
 
 If the API version has changed (e.g. `v0037` → `v0039`), update the version-specific imports in `src/clients/slurm.py` to match the new model names.
-
-## System Design
-
-<img width="2008" height="2280" alt="image" src="https://github.com/user-attachments/assets/100ea380-c6d7-4c91-a278-d6322b946212" />

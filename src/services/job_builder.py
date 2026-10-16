@@ -22,6 +22,7 @@ def build_script(
         script_body.strip(),
         # Stop background sync loop
         "kill $SYNC_PID",
+        "wait $SYNC_PID 2>/dev/null",
         # Final sync and clean up SCARF scratch if sync succeeds
         f"rclone sync $JOB_PATH {webdav_url}/$SLURM_JOB_ID/ && rm -rf $JOB_PATH",
     ]

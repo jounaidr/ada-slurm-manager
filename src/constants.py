@@ -11,3 +11,7 @@ PORT = config.asm_api_port
 # slurm REST client
 SLURM_API_URL = config.slurm_api_url
 SLURM_API_VERIFY_SSL = config.slurm_api_verify_ssl
+
+# WebDAV server
+WEBDAV_HOST = config.webdav_host
+WEBDAV_PORT = config.webdav_port

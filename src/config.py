@@ -21,6 +21,9 @@ class Config(BaseSettings):
     slurm_api_url: AnyHttpUrl
     slurm_api_verify_ssl: bool
 
+    webdav_port: int
+    webdav_host: str
+
 
 def load_config() -> Config:
     """Load and validate config"""

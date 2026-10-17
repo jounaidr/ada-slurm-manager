@@ -10,7 +10,7 @@ def build_script(
     lines = [
         "#!/bin/bash",
         # Create job output dir and redirect script output into it
-        f"JOB_PATH={slurm_scratch_path}/ada-$SLURM_JOB_ID",
+        "JOB_PATH=$HOME/ada-$SLURM_JOB_ID",
         "mkdir -p $JOB_PATH",
         "exec > $JOB_PATH/stdout.log 2> $JOB_PATH/stderr.log",
         # Continuously push output to ada-slurm-manager while job runs

@@ -1,5 +1,5 @@
 from src.config import load_config
-
+from pathlib import Path
 
 config = load_config()
 
@@ -15,3 +15,4 @@ SLURM_API_VERIFY_SSL = config.slurm_api_verify_ssl
 # WebDAV server
 WEBDAV_HOST = config.webdav_host
 WEBDAV_PORT = config.webdav_port
+SCRATCH_DIR = Path("/scratch")

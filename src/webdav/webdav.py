@@ -37,7 +37,7 @@ class _DomainController(BaseDomainController):
             return False
         # Only allow write to the jobs own dir
         path_info = environ.get("PATH_INFO", "") + "/"
-        if not (path_info + "/").startswith(f"/{job_id}/"):
+        if not (path_info).startswith(f"/{job_id}/"):
             return False
         
         return job_id

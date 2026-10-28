@@ -3,7 +3,6 @@
 
 def build_script(
     script_body: str,
-    slurm_scratch_path: str,
     sync_interval_seconds: int,
     webdav_url: str,
 ) -> str:

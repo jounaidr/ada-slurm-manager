@@ -26,6 +26,9 @@ class SlurmOptions(BaseModel):
 class JobSubmitRequest(BaseModel):
     """Request body for submitting a job to Slurm"""
 
+    ceph_home: str = Field(
+        description="User ceph home directory path", examples=["/ceph/home/ab1234"]
+    )
     input_files: list[str] = Field(
         default_factory=list,
         description="Input file paths in Ceph to stage before job runs",

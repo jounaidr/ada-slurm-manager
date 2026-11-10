@@ -35,7 +35,7 @@ async def submit_job(script: str, job_properties: JobProperties, token: str) -> 
     if not isinstance(response.job_id, int):
         raise RuntimeError("Job submitted but no job_id in response")
 
-    logger.info("Job submitted, slurm_job_id=%s", response.job_id)
+    logger.info("Job submitted: slurm_job_id=%s", response.job_id)
 
     return response.job_id
 

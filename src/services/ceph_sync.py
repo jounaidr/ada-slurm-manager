@@ -19,6 +19,7 @@ async def stage_inputs(job_id: int, input_files: list[str]) -> None:
         # Run copy in a separate thread as to not block event loop
         await asyncio.to_thread(shutil.copy2, file_path, scratch_path / file_path.name)
     (scratch_path / _READY_FILE).write_text("")
+
     logger.info("Input file staging complete for slurm_job_id=%s", job_id)
 
 
@@ -34,4 +35,5 @@ async def sync_output(job_id: int) -> None:
         if file.name not in exclude_files and file.is_file():
             # Run copy in a separate thread as to not block event loop
             await asyncio.to_thread(shutil.copy2, file, ceph_job_dir / file.name)
+    
     logger.info("Output sync complete for slurm_job_id=%s", job_id)

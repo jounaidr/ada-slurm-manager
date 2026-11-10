@@ -4,14 +4,13 @@ import logging
 import secrets
 import shutil
 
-from src.constants import SCRATCH_DIR
+from src.constants import SCRATCH_DIR, CEPH_HOME_FILE
 from src.webdav import webdav_server
 
 logger = logging.getLogger(__name__)
 
 
 _SECRETS_FILE = ".webdav_token"
-_CEPH_HOME_FILE = ".ceph_home"
 
 
 def create(job_id: int, ceph_home: str) -> str:
@@ -24,7 +23,7 @@ def create(job_id: int, ceph_home: str) -> str:
     (job_path / _SECRETS_FILE).write_text(token)
     webdav_server.register(str(job_id), token)
     # Write user ceph home to job sub dir
-    (job_path / _CEPH_HOME_FILE).write_text(ceph_home)
+    (job_path / CEPH_HOME_FILE).write_text(ceph_home)
 
     logger.info("Scratch dir created for slurm_job_id=%s", job_id)
     return token

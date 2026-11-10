@@ -5,7 +5,7 @@ import logging
 import shutil
 from pathlib import Path
 
-from src.constants import SCRATCH_DIR
+from src.constants import SCRATCH_DIR, CEPH_HOME_FILE
 
 logger = logging.getLogger(__name__)
 
@@ -25,7 +25,7 @@ async def stage_inputs(job_id: int, input_files: list[str]) -> None:
 
 async def sync_output(job_id: int) -> None:
     scratch_path = SCRATCH_DIR / str(job_id)
-    ceph_home = Path((scratch_path / ".ceph_home").read_text())
+    ceph_home = Path((scratch_path / CEPH_HOME_FILE).read_text())
 
     ceph_job_dir = ceph_home / str(job_id)
     ceph_job_dir.mkdir(exist_ok=True)

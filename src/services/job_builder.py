@@ -12,6 +12,8 @@ def build_script(
         "JOB_PATH=$HOME/ada-$SLURM_JOB_ID",
         "mkdir -p $JOB_PATH",
         "exec > $JOB_PATH/stdout.log 2> $JOB_PATH/stderr.log",
+        # Poll ada-slurm-manager for scratch and input initialization
+        f"until rclone lsf {webdav_url}/$SLURM_JOB_ID/.ready; do sleep 5; done",
         # Pull input files staged by ada-slurm-manager
         f"rclone copy {webdav_url}/$SLURM_JOB_ID/ $JOB_PATH/ --exclude '.webdav_pass'",
         # Continuously push output back to ada-slurm-manager while job runs

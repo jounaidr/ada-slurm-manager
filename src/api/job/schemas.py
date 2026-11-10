@@ -26,12 +26,17 @@ class SlurmOptions(BaseModel):
 class JobSubmitRequest(BaseModel):
     """Request body for submitting a job to Slurm"""
 
+    input_files: list[str] = Field(
+        default_factory=list,
+        description="Input file paths in Ceph to stage before job runs",
+        examples=[["datasets/input.h5", "models/weights.pt"]],
+    )
     job_name: str = Field(
         description="Job name used by Slurm", examples=["ada-refl1d-large"]
     )
     script_body: str = Field(
         description="Core job commands to execute, sourced from the database",
-        examples=["srun refl1d.sif"],
+        examples=["srun myjob.sif --input $INPUT_FILE"],
     )
     sync_interval_seconds: int = Field(
         description="Seconds between rclone output syncs during job execution",

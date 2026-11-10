@@ -11,9 +11,10 @@ logger = logging.getLogger(__name__)
 
 
 _SECRETS_FILE = ".webdav_token"
+_CEPH_HOME_FILE = ".ceph_home"
 
 
-def create(job_id: int) -> str:
+def create(job_id: int, ceph_home: str) -> str:
     # Create job sub dir
     job_path = SCRATCH_DIR / str(job_id)
     job_path.mkdir(parents=True, exist_ok=True)
@@ -22,6 +23,8 @@ def create(job_id: int) -> str:
     token = secrets.token_urlsafe(32)
     (job_path / _SECRETS_FILE).write_text(token)
     webdav_server.register(str(job_id), token)
+    # Write user ceph home to job sub dir
+    (job_path / _CEPH_HOME_FILE).write_text(ceph_home)
 
     logger.info("Scratch dir created for slurm_job_id=%s", job_id)
     return token

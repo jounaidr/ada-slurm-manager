@@ -3,9 +3,19 @@ import logging
 from slurm_rest_api_client.client import AuthenticatedClient
 from slurm_rest_api_client.api.slurm import slurmctld_get_jobs
 from slurm_rest_api_client.api.slurm import slurmctld_submit_job
-from slurm_rest_api_client.models.v0037_job_properties import V0037JobProperties as JobProperties
-from slurm_rest_api_client.models.v0037_job_response_properties import V0037JobResponseProperties as JobResponseProperties
-from slurm_rest_api_client.models.v0037_job_submission import V0037JobSubmission as JobSubmission
+from slurm_rest_api_client.types import UNSET
+from slurm_rest_api_client.models.v0037_job_properties import (
+    V0037JobProperties as JobProperties,
+)
+from slurm_rest_api_client.models.v0037_job_response_properties import (
+    V0037JobResponseProperties as JobResponseProperties,
+)
+from slurm_rest_api_client.models.v0037_job_submission import (
+    V0037JobSubmission as JobSubmission,
+)
+from slurm_rest_api_client.models.v0037_job_properties_environment import (
+    V0037JobPropertiesEnvironment as JobEnvironment,
+)
 
 from src.constants import SLURM_API_URL, SLURM_API_VERIFY_SSL
 
@@ -21,7 +31,34 @@ def _client(token: str) -> AuthenticatedClient:
     )
 
 
-async def submit_job(script: str, job_properties: JobProperties, token: str) -> int:
+async def submit_job(
+    script: str,
+    token: str,
+    job_name: str,
+    partition: str,
+    time_limit_minutes: int,
+    memory_per_node_mb: int,
+    num_nodes: int,
+    tasks: int,
+    cpus_per_task: int,
+    environment: dict[str, str],
+    gpus_per_node: str | None = None,
+) -> int:
+    env = JobEnvironment.from_dict(environment)
+    job_properties = JobProperties(
+        environment=env,
+        name=job_name,
+        partition=partition,
+        time_limit=time_limit_minutes,
+        memory_per_node=memory_per_node_mb,
+        nodes=[num_nodes], # TODO: test tasks_per_node or minimum_nodes
+        #nodes=[num_nodes, num_nodes], # [min, max] — pass equal values to request an exact count
+        tasks=tasks,
+        cpus_per_task=cpus_per_task,
+        # The generated client uses UNSET rather than None to omit optional fields
+        gpus_per_node=gpus_per_node if gpus_per_node is not None else UNSET,
+    )
+
     body = JobSubmission(script=script, job=job_properties)
 
     async with _client(token) as client:
@@ -48,6 +85,8 @@ async def get_jobs(token: str) -> list[JobResponseProperties]:
         raise RuntimeError("No response from slurmrestd on get_jobs")
     if response.errors:
         messages = [str(e.error) for e in response.errors]
-        raise RuntimeError(f"Failed to get jobs from slurmrestd: [{', '.join(messages)}]")
+        raise RuntimeError(
+            f"Failed to get jobs from slurmrestd: [{', '.join(messages)}]"
+        )
 
     return response.jobs

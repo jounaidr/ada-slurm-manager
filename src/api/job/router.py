@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 def _log_staging_error(task: asyncio.Task) -> None:
     if not task.cancelled() and task.exception():
-        logger.exception("Input staging failed for slurm_job_id=%s", task.get_name())
+        logger.error("Input staging failed for slurm_job_id=%s", task.get_name(), exc_info=task.exception())
 
 
 @router.post("", response_model=JobSubmitResponse)
@@ -47,7 +47,7 @@ async def submit_job(
 
     task = asyncio.create_task(
         ceph_sync.stage_inputs(slurm_job_id, request.input_files),
-        name=str(slurm_job_id),  # Set task name to job id
+        name=str(slurm_job_id),
     )
     task.add_done_callback(_log_staging_error)
 

@@ -14,10 +14,12 @@ _READY_FILE = ".ready"
 
 async def stage_inputs(job_id: int, input_files: list[str]) -> None:
     scratch_path = SCRATCH_DIR / str(job_id)
+
     for file in input_files:
         file_path = Path(file)
         # Run copy in a separate thread as to not block event loop
         await asyncio.to_thread(shutil.copy2, file_path, scratch_path / file_path.name)
+    # The job script will wait for _READY_FILE to be present before pulling inputs
     (scratch_path / _READY_FILE).write_text("")
 
     logger.info("Input file staging complete for slurm_job_id=%s", job_id)

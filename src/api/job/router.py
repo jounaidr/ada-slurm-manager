@@ -13,6 +13,11 @@ router = APIRouter(prefix="/jobs", tags=["jobs"])
 logger = logging.getLogger(__name__)
 
 
+def _log_staging_error(task: asyncio.Task) -> None:
+    if not task.cancelled() and task.exception():
+        logger.exception("Input staging failed for slurm_job_id=%s", task.get_name())
+
+
 @router.post("", response_model=JobSubmitResponse)
 async def submit_job(
     request: JobSubmitRequest,
@@ -39,6 +44,11 @@ async def submit_job(
     )
 
     scratch.create(slurm_job_id, request.ceph_home)
-    asyncio.create_task(ceph_sync.stage_inputs(slurm_job_id, request.input_files))
+
+    task = asyncio.create_task(
+        ceph_sync.stage_inputs(slurm_job_id, request.input_files),
+        name=str(slurm_job_id),  # Set task name to job id
+    )
+    task.add_done_callback(_log_staging_error)
 
     return JobSubmitResponse(slurm_job_id=slurm_job_id)

@@ -23,6 +23,7 @@ async def submit_job(
     request: JobSubmitRequest,
     x_slurm_user_token: str = Header(),
 ) -> JobSubmitResponse:
+    
     script = job_builder.build_script(
         script_body=request.script_body,
         sync_interval_seconds=request.sync_interval_seconds,

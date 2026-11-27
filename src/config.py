@@ -24,6 +24,11 @@ class Config(BaseSettings):
     webdav_port: int
     webdav_host: str
 
+    @property
+    def webdav_url(self) -> str:
+        # Derive WebDAV URL
+        return f"http://{self.webdav_host}:{self.webdav_port}"
+
 
 def load_config() -> Config:
     """Load and validate config"""

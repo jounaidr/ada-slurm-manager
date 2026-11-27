@@ -24,10 +24,17 @@ async def submit_job(
     x_slurm_user_token: str = Header(),
 ) -> JobSubmitResponse:
     
+    # Generate WebDAV token, inject into job env
+    token, token_obscured = scratch.generate_token()
+    environment = {
+        **request.environment,
+        "WEBDAV_URL": WEBDAV_URL,
+        "WEBDAV_PASS": token_obscured,
+    }
+    
     script = job_builder.build_script(
         script_body=request.script_body,
         sync_interval_seconds=request.sync_interval_seconds,
-        webdav_url=WEBDAV_URL,
     )
 
     slurm_job_id = await slurm.submit_job(
@@ -40,11 +47,12 @@ async def submit_job(
         num_nodes=request.slurm.num_nodes,
         tasks=request.slurm.tasks,
         cpus_per_task=request.slurm.cpus_per_task,
-        environment=request.environment,
+        environment=environment,
         gpus_per_node=request.slurm.gpus_per_node,
     )
 
-    scratch.create(slurm_job_id, request.ceph_home)
+    # Create scratch dir with plain WebDAV token to register
+    scratch.create(slurm_job_id, request.ceph_home, token)
 
     task = asyncio.create_task(
         ceph_sync.stage_inputs(slurm_job_id, request.input_files),

@@ -32,8 +32,8 @@ async def submit_job(
     token, token_obscured = scratch.generate_token()
     environment = {
         **request.environment,
-        "WEBDAV_URL": WEBDAV_URL,
-        "WEBDAV_PASS": token_obscured,
+        "RCLONE_WEBDAV_URL": WEBDAV_URL,
+        "RCLONE_WEBDAV_PASS": token_obscured,
     }
 
     script = job_builder.build_script(

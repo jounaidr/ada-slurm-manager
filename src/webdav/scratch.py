@@ -3,6 +3,7 @@
 import logging
 import secrets
 import shutil
+import subprocess
 
 from src.constants import SCRATCH_DIR, CEPH_HOME_FILE
 from src.webdav import webdav_server
@@ -25,6 +26,19 @@ def create(job_id: int, ceph_home: str, webdav_token: str) -> None:
     (job_path / CEPH_HOME_FILE).write_text(ceph_home)
 
     logger.info("Scratch dir created for slurm_job_id=%s", job_id)
+
+
+def generate_token() -> tuple[str, str]:
+    token = secrets.token_urlsafe(32)
+
+    # rclone requires an obscured token, if we pass the plain token 
+    # to the job script rclone will try and decrypt that before
+    # making the request back, resulting in an invalid token
+    token_obscured = subprocess.run(
+        ["rclone", "obscure", token], capture_output=True, text=True, check=True
+    ).stdout.strip()
+
+    return token, token_obscured
 
 
 def delete(job_id: int) -> None:

@@ -39,11 +39,12 @@ class _DomainController(BaseDomainController):
         path_info = environ.get("PATH_INFO", "") + "/"
         if not (path_info).startswith(f"/{job_id}/"):
             return False
-        
+
         return job_id
 
     def supports_http_digest_auth(self):
         return False
+
 
 # Creates a new thread per request
 class _Server(socketserver.ThreadingMixIn, WSGIServer):
@@ -55,13 +56,19 @@ def start() -> None:
     # Initialise base scratch dir
     SCRATCH_DIR.mkdir(parents=True, exist_ok=True)
 
-    app = WsgiDAVApp({
-        "provider_mapping": {"/": FilesystemProvider(str(SCRATCH_DIR))},
-        "domain_controller": _DomainController,
-        "http_authenticator": {"accept_basic": True, "accept_digest": False, "default_to_digest": False},
-        "verbose": 0,
-        "logging": {"enable_loggers": []},
-    })
+    app = WsgiDAVApp(
+        {
+            "provider_mapping": {"/": FilesystemProvider(str(SCRATCH_DIR))},
+            "http_authenticator": {
+                "domain_controller": _DomainController,
+                "accept_basic": True,
+                "accept_digest": False,
+                "default_to_digest": False,
+            },
+            "verbose": 0,
+            "logging": {"enable_loggers": []},
+        }
+    )
 
     server = _Server((WEBDAV_HOST, WEBDAV_PORT), WSGIRequestHandler)
     server.set_app(app)

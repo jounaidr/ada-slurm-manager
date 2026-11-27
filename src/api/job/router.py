@@ -15,7 +15,11 @@ logger = logging.getLogger(__name__)
 
 def _log_staging_error(task: asyncio.Task) -> None:
     if not task.cancelled() and task.exception():
-        logger.error("Input staging failed for slurm_job_id=%s", task.get_name(), exc_info=task.exception())
+        logger.error(
+            "Input staging failed for slurm_job_id=%s",
+            task.get_name(),
+            exc_info=task.exception(),
+        )
 
 
 @router.post("", response_model=JobSubmitResponse)
@@ -23,7 +27,7 @@ async def submit_job(
     request: JobSubmitRequest,
     x_slurm_user_token: str = Header(),
 ) -> JobSubmitResponse:
-    
+
     # Generate WebDAV token, inject into job env
     token, token_obscured = scratch.generate_token()
     environment = {
@@ -31,7 +35,7 @@ async def submit_job(
         "WEBDAV_URL": WEBDAV_URL,
         "WEBDAV_PASS": token_obscured,
     }
-    
+
     script = job_builder.build_script(
         script_body=request.script_body,
         sync_interval_seconds=request.sync_interval_seconds,

@@ -1,7 +1,6 @@
 from src.constants import (
     PORT,
     SLURM_API_URL,
-    SLURM_API_VERSION,
     VERSION,
     WORKERS,
 )
